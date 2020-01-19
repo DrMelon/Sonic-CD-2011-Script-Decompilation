@@ -1,0 +1,29 @@
+INSTALLING:
+
+1. Buy Sonic CD (2011) from Steam - this release only includes decompiled scripts and replacement art. The rest of the assets need to be loaded from the legit release.
+2. Install Sonic CD in Steam.
+3. Navigate to the Sonic CD game folder (usually C:/Program Files (x86)/Steam/steamapps/common/<username>/SonicCD)
+4. Put all the files from this zip in that folder.
+5. Run SnolfCD.exe to play!
+
+CONTROLS AND SETTINGS:
+Edit `settings.ini` to change things like screen resolution or key bindings.
+
+This romhack replaces Sonic's ability to move with a golf-game mechanic, similar to the kind of thing found in games like Kirby's Dream Course.
+Sonic remains rolled up into a ball under most conditions, and can only be launched when he has come to a stop.
+The Rings counter instead counts how many shots you have taken, allowing players to compete to get the lowest score!
+
+A, B, C: When Sonic is at rest, press to begin your golf swing. A ring sprite will move left to right; how far left and right the sprite is determines the force that Sonic will be hit with, and the direction that he will move in. 
+Press the button again to lock-in the horizontal force. You will then be presented with a similar display that controls how much vertical force Sonic will be hit with. 
+Pressing the button in this state will lock-in the vertical force, and launch Sonic! Good luck!
+
+In order to prevent the player from getting stuck, the player can still influence Sonic's rolling speed by braking with the directional buttons, and can control his air velocity if he is launched by a vertical spring.
+If you're completely stuck, press and hold A, B, or C to reset to your last position!
+
+As a special addition to SnolfCD, you can snolf directly into the past, present, and future with the A, B, and C buttons! (These are Z, X, C by default on PC.)
+This also works with shot-reset! Hold A, B, C to reset into the past, present, or future.
+
+KNOWN ISSUES:
+1. Snolfing to the Past or Future at the very start of Palmtree Panic usually gets you stuck in a wall. Snolf in the present until you're past the big ramp at the start.
+2. This isn't compatible with the Sonic CD mod loader (yet?).
+3. Some menu options do not work. They weren't implemented in the decompilation at the time SnolfCD was built.
