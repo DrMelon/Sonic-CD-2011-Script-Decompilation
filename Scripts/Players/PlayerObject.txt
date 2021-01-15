@@ -1,6 +1,7 @@
 //------------Sonic CD Player Object Script-------------//
 //--------Scripted by Christian Whitehead 'The Taxman'--------//
 //-------Unpacked By Rubberduckycooly's Script Unpacker-------//
+//------ Snolfed by drmelon ------//
 
 //-------Aliases-------//
 #alias 1: TYPE_PLAYEROBJECT
@@ -455,6 +456,7 @@ function PlayerObject_HandleMovement
 		TempValue0>>=8
 		Player.Speed+=TempValue0
 	else
+		Snolf.Accumulator++
 		if Player.Left==1
 			TempValue0=Player.TopSpeed
 			FlipSign(TempValue0)

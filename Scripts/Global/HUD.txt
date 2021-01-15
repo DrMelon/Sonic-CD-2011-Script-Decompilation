@@ -38,7 +38,7 @@ sub ObjectDraw
 	DrawNumbers(0,104,29,Stage.MilliSeconds,2,8,1)
 	DrawNumbers(0,80,29,Stage.Seconds,2,8,1)
 	DrawNumbers(0,56,29,Stage.Minutes,1,8,1)
-	DrawNumbers(0,80,45,Player.Rings,3,8,0)
+	DrawNumbers(0,80,45,Snolf.Accumulator,3,8,0)
 	if Stage.DebugMode==1
 		TempValue0=Player.XPos
 		TempValue0>>=16
