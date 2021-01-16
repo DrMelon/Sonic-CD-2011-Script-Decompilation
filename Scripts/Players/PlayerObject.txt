@@ -74,8 +74,10 @@
 // Snolf Functions
 #function Golf_Bouncer
 #function Golf_ResetBall
-#function Golf_Meter
+#function Golf_Main
 #function Golf_Swing
+#function Golf_EnterStrikeMode
+#function Golf_StrikeMode
 
 
 function PlayerObject_BadnikBreak
@@ -463,7 +465,6 @@ function PlayerObject_HandleMovement
 		TempValue0>>=8
 		Player.Speed+=TempValue0
 	else
-		Snolf.Accumulator++
 		if Player.Left==1
 			TempValue0=Player.TopSpeed
 			FlipSign(TempValue0)
@@ -670,10 +671,10 @@ function PlayerObject_HandleRollDecel
 		endif
 		if Player.Speed==0
 			if Player.Angle>224
-				Player.State=PlayerObject_HandleGround
+				//Player.State=PlayerObject_HandleGround
 			endif
 			if Player.Angle<32
-				Player.State=PlayerObject_HandleGround
+				//Player.State=PlayerObject_HandleGround
 			endif
 		endif
 		Sin256(TempValue0,Player.Angle)
@@ -693,10 +694,10 @@ function PlayerObject_HandleRollDecel
 		endif
 		if Player.Speed==0
 			if Player.Angle>224
-				Player.State=PlayerObject_HandleGround
+				//Player.State=PlayerObject_HandleGround
 			endif
 			if Player.Angle<32
-				Player.State=PlayerObject_HandleGround
+				//Player.State=PlayerObject_HandleGround no unrolling in snolf
 			endif
 		endif
 		Sin256(TempValue0,Player.Angle)
@@ -1192,9 +1193,9 @@ function PlayerObject_HandleRolling
 			endif
 		endif
 		CallFunction(PlayerObject_ResetOnFloor)
-		if Player.JumpPress==1
-			CallFunction(PlayerObject_StartJump)
-		endif
+		//if Player.JumpPress==1
+		//	CallFunction(PlayerObject_StartJump)
+		//endif //no rolling
 	endif
 endfunction
 
@@ -1906,11 +1907,11 @@ function PlayerObject_CorkscrewRoll
 			Player.State=PlayerObject_HandleAir
 		endif
 	endif
-	if Player.JumpPress==1
-		CallFunction(PlayerObject_StartJump)
-	else
-		CallFunction(PlayerObject_ResetOnFloor)
-	endif
+	//if Player.JumpPress==1
+	//	CallFunction(PlayerObject_StartJump)
+	//else
+		CallFunction(PlayerObject_ResetOnFloor) //in snolf, you can't jump when rolling
+	//endif
 endfunction
 
 
@@ -2239,8 +2240,8 @@ function PlayerObject_SizeChange
 endfunction
 
 function Golf_Bouncer
-	Player.XVelocity = 0 - Player.XVelocity
-	Player.XVelocity = Player.XVelocity / 2
+	Player.XVelocity *= -1
+	Player.XVelocity /= 2
 endfunction
 
 function Golf_ResetBall
@@ -2251,10 +2252,104 @@ function Golf_ResetBall
 	Player.Speed = 0
 endfunction
 
-function Golf_Meter
+function Golf_Main
+	Snolf.DidJustSwing = 0
+	
+	Snolf.Accumulator++
+	if Snolf.Accumulator == 512
+		Snolf.Accumulator = 0
+	endif
+
+	// Player holding a reset button?
+	if Player.JumpHold == 1
+		Snolf.ResetTimer--
+		if Snolf.ResetTimer == 0
+			// Do reset
+			CallFunction(Golf_ResetBall) 
+		endif
+	else
+		Snolf.ResetTimer = 90
+	endif
+
+	if Player.JumpPress == 1
+		// Enter strike mode when not moving
+		if Player.Speed < 64 
+			CallFunction(Golf_EnterStrikeMode)
+		endif
+		if Snolf.ForceAllow == 1
+			CallFunction(Golf_EnterStrikeMode)
+		endif
+		if Snolf.ForceTemp == 1
+			CallFunction(Golf_EnterStrikeMode)
+		endif
+	else
+		// Store position in strikemode.
+		if Snolf.ModeState > 0
+			Snolf.BarPosX = Player.XPos
+			Snolf.BarPosY = Player.YPos
+			// Precalc sin
+			Sin(Snolf.Accumulator,TempValue0)
+			Cos(Snolf.Accumulator,TempValue1)
+			if Snolf.ModeState > 1
+				// Y-Mode
+				TempValue1 += 255
+				TempValue1<<=3
+				TempValue1 *= -1
+				Snolf.MeterY=TempValue1
+			else 
+				// X-Mode
+				TempValue0<<=4
+				Snolf.MeterX=TempValue0
+			endif
+		endif
+	endif
+
+	
+endfunction
+
+function Golf_EnterStrikeMode
+	if Snolf.ModeState == 0
+		// Enter strike mode
+		Snolf.ModeState = 1
+		Snolf.MeterX = 0
+		Snolf.MeterY = 0
+		Snolf.Accumulator = 0
+		// Facing left/right check. left first.
+		if Player.Direction == 0
+			Snolf.Accumulator = 127
+		endif
+
+		// Spawn Shot Meters
+		// Play Sounds
+
+		CallFunction(Golf_StrikeMode)
+	else
+		// In strike mode already
+		CallFunction(Golf_StrikeMode)
+	endif
+endfunction
+
+function Golf_StrikeMode
+	if Snolf.ModeState == 2
+		// Y-Mode, so we probably want to swing!
+		CallFunction(Golf_Swing)
+	else
+		// Play sound and advance mode state.
+		Snolf.ModeState++
+		Snolf.Accumulator = 127; // 127 cosine at bottom
+	endif
 endfunction
 
 function Golf_Swing
+	Snolf.ModeState = 0
+	Snolf.ForceTemp = 0
+	Player.XVelocity = Snolf.MeterX
+	Player.YVelocity = Snolf.MeterY
+	Player.Speed = 1024
+	Player.State = PlayerObject_HandleRolling
+	Snolf.DidJustSwing = 1
+
+	// Play Sound to fire
 endfunction
 
 
@@ -2276,6 +2371,7 @@ sub ObjectMain
 			Screen.CameraStyle=Options.OriginalControls
 		else
 			CallFunction(PlayerObject_ProcessPlayer)
+			CallFunction(Golf_Main)
 			CallFunction(Player.State)
 			ProcessAnimation()
 			if Player.Animation==ANI_JUMPING
@@ -2302,6 +2398,7 @@ sub ObjectMain
 		endif
 	else
 		CallFunction(PlayerObject_ProcessPlayer)
+		CallFunction(Golf_Main)
 		CallFunction(Player.State)
 		ProcessAnimation()
 		if Player.Animation==ANI_JUMPING
