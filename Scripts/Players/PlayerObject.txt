@@ -71,6 +71,13 @@
 #function PlayerObject_DebugMode
 #function PlayerObject_SizeChange
 
+// Snolf Functions
+#function Golf_Bouncer
+#function Golf_ResetBall
+#function Golf_Meter
+#function Golf_Swing
+
+
 function PlayerObject_BadnikBreak
 	CheckEqual(Player.Animation,ANI_JUMPING)
 	TempValue0=CheckResult
@@ -2229,6 +2236,25 @@ function PlayerObject_SizeChange
 		endif
 		BindPlayerToObject(0,0)
 	endif
+endfunction
+
+function Golf_Bouncer
+	Player.XVelocity = 0 - Player.XVelocity
+	Player.XVelocity = Player.XVelocity / 2
+endfunction
+
+function Golf_ResetBall
+	Player.XPos = Snolf.BarPosX
+	Player.YPos = Snolf.BarPosY
+	Player.XVelocity = 0
+	Player.YVelocity = 0
+	Player.Speed = 0
+endfunction
+
+function Golf_Meter
+endfunction
+
+function Golf_Swing
 endfunction
 
 
