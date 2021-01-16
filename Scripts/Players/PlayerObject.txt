@@ -1148,8 +1148,8 @@ function PlayerObject_HandleAir
 			CallFunction(Player.FlightFunction)
 		endif
 	else
-		//Player.State=PlayerObject_HandleGround
-		Player.State=PlayerObject_HandleRolling // no unroll in snolf
+		Player.State=PlayerObject_HandleGround
+		//Player.State=PlayerObject_HandleRolling // no unroll in snolf
 		CallFunction(PlayerObject_ResetOnFloor)
 		Player.Skidding=0
 	endif
@@ -1208,8 +1208,8 @@ function PlayerObject_AirControlLock
 	if Player.Gravity==1
 		CallFunction(PlayerObject_HandleAirMovement)
 	else
-		//Player.State=PlayerObject_HandleGround no unroll in snolf
-		Player.State=PlayerObject_HandleRolling
+		Player.State=PlayerObject_HandleGround //no unroll in snolf
+		//Player.State=PlayerObject_HandleRolling
 		CallFunction(PlayerObject_ResetOnFloor)
 		Player.Skidding=0
 	endif
@@ -2276,7 +2276,14 @@ function Golf_Main
 	if Player.JumpPress == 1
 		// Enter strike mode when not moving
 		if Player.Speed < 64 
-			CallFunction(Golf_EnterStrikeMode)
+			if Player.Speed > -64
+				CallFunction(Golf_EnterStrikeMode)
+			endif
+		endif
+		if Player.Speed > -64 
+			if Player.Speed < 64
+				CallFunction(Golf_EnterStrikeMode)
+			endif
 		endif
 		if Snolf.ForceAllow == 1
 			CallFunction(Golf_EnterStrikeMode)
@@ -2345,9 +2352,11 @@ endfunction
 function Golf_Swing
 	Snolf.ModeState = 0
 	Snolf.ForceTemp = 0
-	Player.XVelocity = 8000
-	Player.YVelocity = 8000
-	Player.Speed = 1024
+	Player.XVelocity = Snolf.MeterX
+	Player.XVelocity *= 100
+	Player.YVelocity = Snolf.MeterY
+	Player.YVelocity *= 100
+	Player.Speed = Player.XVelocity
 	Player.State = PlayerObject_HandleAir
 	Player.Gravity = 1
 	Snolf.DidJustSwing = 1
