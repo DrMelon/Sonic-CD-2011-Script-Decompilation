@@ -2279,10 +2279,11 @@ function Golf_Main
 			if Player.Speed > -64
 				CallFunction(Golf_EnterStrikeMode)
 			endif
-		endif
-		if Player.Speed > -64 
-			if Player.Speed < 64
-				CallFunction(Golf_EnterStrikeMode)
+		else
+			if Player.Speed > -64 
+				if Player.Speed < 64
+					CallFunction(Golf_EnterStrikeMode)
+				endif
 			endif
 		endif
 		if Snolf.ForceAllow == 1
