@@ -1148,7 +1148,8 @@ function PlayerObject_HandleAir
 			CallFunction(Player.FlightFunction)
 		endif
 	else
-		Player.State=PlayerObject_HandleGround
+		//Player.State=PlayerObject_HandleGround
+		Player.State=PlayerObject_HandleRolling // no unroll in snolf
 		CallFunction(PlayerObject_ResetOnFloor)
 		Player.Skidding=0
 	endif
@@ -1207,7 +1208,8 @@ function PlayerObject_AirControlLock
 	if Player.Gravity==1
 		CallFunction(PlayerObject_HandleAirMovement)
 	else
-		Player.State=PlayerObject_HandleGround
+		//Player.State=PlayerObject_HandleGround no unroll in snolf
+		Player.State=PlayerObject_HandleRolling
 		CallFunction(PlayerObject_ResetOnFloor)
 		Player.Skidding=0
 	endif
@@ -2288,18 +2290,18 @@ function Golf_Main
 			Snolf.BarPosX = Player.XPos
 			Snolf.BarPosY = Player.YPos
 			// Precalc sin
-			Sin(Snolf.Accumulator,TempValue0)
-			Cos(Snolf.Accumulator,TempValue1)
+			Sin(TempValue5,Snolf.Accumulator)
+			Cos(TempValue6,Snolf.Accumulator)
 			if Snolf.ModeState > 1
 				// Y-Mode
-				TempValue1 += 255
-				TempValue1<<=3
-				TempValue1 *= -1
-				Snolf.MeterY=TempValue1
+				TempValue6 += 255
+				TempValue6<<=3
+				TempValue6 *= -1
+				Snolf.MeterY=TempValue6
 			else 
 				// X-Mode
-				TempValue0<<=4
-				Snolf.MeterX=TempValue0
+				TempValue5<<=4
+				Snolf.MeterX=TempValue5
 			endif
 		endif
 	endif
@@ -2315,14 +2317,14 @@ function Golf_EnterStrikeMode
 		Snolf.MeterY = 0
 		Snolf.Accumulator = 0
 		// Facing left/right check. left first.
-		if Player.Direction == 0
+		if Player.Direction == 1
 			Snolf.Accumulator = 127
 		endif
 
 		// Spawn Shot Meters
 		// Play Sounds
 
-		CallFunction(Golf_StrikeMode)
+		//CallFunction(Golf_StrikeMode)
 	else
 		// In strike mode already
 		CallFunction(Golf_StrikeMode)
@@ -2343,10 +2345,11 @@ endfunction
 function Golf_Swing
 	Snolf.ModeState = 0
 	Snolf.ForceTemp = 0
-	Player.XVelocity = Snolf.MeterX
-	Player.YVelocity = Snolf.MeterY
+	Player.XVelocity = 8000
+	Player.YVelocity = 8000
 	Player.Speed = 1024
-	Player.State = PlayerObject_HandleRolling
+	Player.State = PlayerObject_HandleAir
+	Player.Gravity = 1
 	Snolf.DidJustSwing = 1
 
 	// Play Sound to fire

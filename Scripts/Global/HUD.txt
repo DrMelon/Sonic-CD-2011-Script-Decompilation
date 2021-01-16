@@ -38,7 +38,13 @@ sub ObjectDraw
 	DrawNumbers(0,104,29,Stage.MilliSeconds,2,8,1)
 	DrawNumbers(0,80,29,Stage.Seconds,2,8,1)
 	DrawNumbers(0,56,29,Stage.Minutes,1,8,1)
-	DrawNumbers(0,80,45,Snolf.Accumulator,3,8,0)
+	DrawNumbers(0,80,45,Snolf.SwingsTaken,3,8,0)
+	DrawNumbers(0,80,66,Snolf.Accumulator,3,8,0)
+	DrawNumbers(0,80,82,Snolf.ModeState,1,8,0)
+	DrawNumbers(0,80,100,Snolf.MeterX,6,8,0)
+	DrawNumbers(0,80,120,Snolf.MeterY,6,8,0)
+	DrawNumbers(0,80,140,Player.XVelocity,6,8,0)
+	DrawNumbers(0,80,160,Player.YVelocity,6,8,0)
 	if Stage.DebugMode==1
 		TempValue0=Player.XPos
 		TempValue0>>=16
