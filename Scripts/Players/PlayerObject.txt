@@ -605,7 +605,9 @@ function PlayerObject_HandleAirSpeed
 	FlipSign(TempValue0)
 	if Player.Speed>TempValue0
 		if Player.Left==1
-			//Player.Speed-=Player.AirAcceleration
+			if Player.Animation != ANI_JUMPING
+				Player.Speed-=Player.AirAcceleration
+			endif
 			Player.Direction=FACING_LEFT
 		endif
 	else
@@ -615,7 +617,9 @@ function PlayerObject_HandleAirSpeed
 	endif
 	if Player.Speed<Player.TopSpeed
 		if Player.Right==1
-			//Player.Speed+=Player.AirAcceleration
+			if Player.Animation != ANI_JUMPING
+				Player.Speed+=Player.AirAcceleration
+			endif
 			Player.Direction=FACING_RIGHT
 		endif
 	else
@@ -672,10 +676,14 @@ function PlayerObject_HandleRollDecel
 		endif
 		if Player.Speed==0
 			if Player.Angle>224
-				//Player.State=PlayerObject_HandleGround
+				if Player.ControlMode == -1
+					Player.State=PlayerObject_HandleGround //no unroll in snolf
+				endif
 			endif
 			if Player.Angle<32
-				//Player.State=PlayerObject_HandleGround
+				if Player.ControlMode == -1
+					Player.State=PlayerObject_HandleGround //no unroll in snolf
+				endif
 			endif
 		endif
 		Sin256(TempValue0,Player.Angle)
@@ -695,10 +703,14 @@ function PlayerObject_HandleRollDecel
 		endif
 		if Player.Speed==0
 			if Player.Angle>224
-				//Player.State=PlayerObject_HandleGround
+				if Player.ControlMode == -1
+					Player.State=PlayerObject_HandleGround //no unroll in snolf
+				endif
 			endif
 			if Player.Angle<32
-				//Player.State=PlayerObject_HandleGround no unrolling in snolf
+				if Player.ControlMode == -1
+					Player.State=PlayerObject_HandleGround //no unroll in snolf
+				endif
 			endif
 		endif
 		Sin256(TempValue0,Player.Angle)
@@ -1037,7 +1049,7 @@ function PlayerObject_HandleGround
 		if Player.JumpPress==1
 			//CallFunction(PlayerObject_StartJump) // no jumping in snolf
 		else
-			if 1 == 1 // force roll in snolf
+			if Player.ControlMode != -1 // force roll in snolf
 				Player.State=PlayerObject_HandleRolling
 				Player.Animation=ANI_JUMPING
 			else
@@ -1155,7 +1167,6 @@ function PlayerObject_HandleAir
 		endif
 	else
 		Player.State=PlayerObject_HandleGround
-		//Player.State=PlayerObject_HandleRolling // no unroll in snolf
 		CallFunction(PlayerObject_ResetOnFloor)
 		Player.Skidding=0
 	endif
@@ -1214,8 +1225,7 @@ function PlayerObject_AirControlLock
 	if Player.Gravity==1
 		CallFunction(PlayerObject_HandleAirMovement)
 	else
-		Player.State=PlayerObject_HandleGround //no unroll in snolf
-		//Player.State=PlayerObject_HandleRolling
+		Player.State=PlayerObject_HandleGround
 		CallFunction(PlayerObject_ResetOnFloor)
 		Player.Skidding=0
 	endif
@@ -2346,13 +2356,13 @@ function Golf_Main
 
 	if Player.JumpPress == 1
 		// Enter strike mode when not moving
-		if Player.Speed < 64 
-			if Player.Speed > -64
+		if Player.Speed < 32000 
+			if Player.Speed > -32000
 				CallFunction(Golf_EnterStrikeMode)
 			endif
 		else
-			if Player.Speed > -64 
-				if Player.Speed < 64
+			if Player.Speed > -32000
+				if Player.Speed < 32000
 					CallFunction(Golf_EnterStrikeMode)
 				endif
 			endif
@@ -2428,7 +2438,6 @@ function Golf_StartTimeTravel
 	Warp.Angle=Player.Angle
 	Warp.PlayerFrame=Player.Frame
 	Player.Invincible=1000
-	Player.ControlMode=-1
 	StopSfx(24)
 	StopSfx(25)
 	Stage.State=STAGE_RUNNING
