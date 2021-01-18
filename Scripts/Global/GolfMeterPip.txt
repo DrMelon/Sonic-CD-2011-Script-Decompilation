@@ -4,8 +4,14 @@
 
 sub ObjectMain
     Object.XPos=Snolf.BarPosX
+    TempValue0=Snolf.MeterX
+    TempValue0*=10000
+    Object.XPos+=TempValue0
     Object.YPos=Snolf.BarPosY
-
+    TempValue0=Snolf.MeterY
+    TempValue0*=10000
+    Object.YPos+=TempValue0
+    
     if Snolf.ModeState == 0 
         Object.Type=TypeName[BlankObject]
     endif

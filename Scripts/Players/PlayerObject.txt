@@ -2335,7 +2335,10 @@ function Golf_EnterStrikeMode
 		Snolf.MeterX = 0
 		Snolf.MeterY = 0
 		Snolf.Accumulator = 0
-		CreateTempObject(TypeName[GolfMeterH],0,Object.XPos,Object.YPos)
+		CreateTempObject(TypeName[GolfMeterH],0,Player.XPos,Player.YPos)
+		Object[TempObjectPos].DrawOrder=Player.DrawOrder
+		CreateTempObject(TypeName[GolfMeterPip],0,Player.XPos,Player.YPos)
+		Object[TempObjectPos].DrawOrder=Player.DrawOrder
 		// Facing left/right check. left first.
 		if Player.Direction == 1
 			Snolf.Accumulator = 127
