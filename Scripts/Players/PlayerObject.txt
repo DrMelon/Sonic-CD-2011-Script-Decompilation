@@ -2521,6 +2521,7 @@ function Golf_Swing
 	Player.State = PlayerObject_HandleAir
 	Player.Gravity = 1
 	Snolf.DidJustSwing = 1
+	Snolf.SwingsTaken++
 
 	// Play Sound to fire
 endfunction

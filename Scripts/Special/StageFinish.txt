@@ -322,10 +322,12 @@ sub ObjectMain
 				Fade_Colour+=TempValue0
 				Fade_Colour+=224
 				if Stage.ListPos<Stage.ListSize
+					Snolf.SwingsTaken = 0 // reset shots for snolf
 					LoadStage()
 				else
 					Stage.ActiveList=PRESENTATION_STAGE
 					Stage.ListPos=0
+					Snolf.SwingsTaken = 0 // reset shots for snolf
 					LoadStage()
 				endif
 			endif
@@ -345,6 +347,7 @@ sub ObjectMain
 			TimeAttack.Result+=Stage.MilliSeconds
 			Stage.ListPos=2
 			Stage.ActiveList=PRESENTATION_STAGE
+			Snolf.SwingsTaken = 0 // reset shots for snolf
 			LoadStage()
 		endif
 		SetScreenFade(0,0,0,Object.Value0)
@@ -357,6 +360,7 @@ sub ObjectMain
 			StopMusic()
 			Stage.ListPos=7
 			Stage.ActiveList=PRESENTATION_STAGE
+			Snolf.SwingsTaken = 0 // reset shots for snolf
 			LoadStage()
 		endif
 		SetScreenFade(0,0,0,Object.Value0)

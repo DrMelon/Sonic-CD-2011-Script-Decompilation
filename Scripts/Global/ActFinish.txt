@@ -258,10 +258,12 @@ sub ObjectMain
 					TempValue0=1
 				endif
 				if TempValue0==0
+					Snolf.SwingsTaken = 0 // reset shots for snolf
 					LoadStage()
 				else
 					Stage.ActiveList=PRESENTATION_STAGE
 					Stage.ListPos=1
+					Snolf.SwingsTaken = 0 // reset shots for snolf
 					LoadStage()
 				endif
 			endif
@@ -401,6 +403,7 @@ sub ObjectMain
 					TimeAttack.Result+=Stage.MilliSeconds
 					Stage.ActiveList=PRESENTATION_STAGE
 					Stage.ListPos=2
+					Snolf.SwingsTaken = 0 // reset shots for snolf
 					LoadStage()
 				else
 #platform: Standard
@@ -417,10 +420,12 @@ sub ObjectMain
 						TempValue0=1
 					endif
 					if TempValue0==0
+						Snolf.SwingsTaken = 0 // reset shots for snolf
 						LoadStage()
 					else
 						Stage.ActiveList=PRESENTATION_STAGE
 						Stage.ListPos=1
+						Snolf.SwingsTaken = 0 // reset shots for snolf
 						LoadStage()
 					endif
 				endif
