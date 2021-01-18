@@ -1,6 +1,6 @@
 
 //-------Aliases-------//
-#alias 82: TYPE_GOLFMETERH
+#alias 83: TYPE_GOLFMETERPIP
 
 sub ObjectMain
     Object.XPos=Snolf.BarPosX

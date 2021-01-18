@@ -2267,6 +2267,14 @@ function Golf_Main
 		Snolf.Accumulator = 0
 	endif
 
+	// L/R check
+	if Player.Left == 1
+		Player.Direction=FACING_LEFT
+	endif
+	if Player.Right == 1
+		Player.Direction=FACING_RIGHT
+	endif
+
 	// Player holding a reset button?
 	if Player.JumpHold == 1
 		Snolf.ResetTimer--
