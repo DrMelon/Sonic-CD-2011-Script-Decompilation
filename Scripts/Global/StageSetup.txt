@@ -242,7 +242,8 @@ sub ObjectStartup
 		Player.Right=1
 		Player.ControlMode=-1
 		Player.Speed=0
-		Player.Animation=0
+		Player.Animation=ANI_JUMPING
+		Player.State=PlayerObject_HandleRolling
 	endif
 	if Object[24].PropertyValue==2
 		Good_Future=1

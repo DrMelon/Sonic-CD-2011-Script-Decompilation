@@ -2269,60 +2269,68 @@ function Golf_ResetBall
 	Player.YVelocity = 0
 	Player.Speed = 0
 
-	if Object[24].PropertyValue == 0 // We're in Present Time
-		if keyDown.ButtonA == 1 // PAST
-			CallFunction(Golf_StartTimeTravel)
-			Stage.ListPos++
-			LoadStage()
-		endif
-		if keyDown.ButtonC == 1 // FUTURE
-			CallFunction(Golf_StartTimeTravel)
-			if Transporter_Destroyed==1 // Check for Good Future
-				Stage.ListPos+=2
-			else
-				Stage.ListPos+=3
+	// Prevent time travelling in boss levels. Sorry!
+	TempValue5 = Stage.ListPos
+	Mod(TempValue5, 10)
+
+	if TempValue5 != 8
+		if TempValue5 != 9
+			if Object[24].PropertyValue == 0 // We're in Present Time
+				if keyDown.ButtonA == 1 // PAST
+					CallFunction(Golf_StartTimeTravel)
+					Stage.ListPos++
+					LoadStage()
+				endif
+				if keyDown.ButtonC == 1 // FUTURE
+					CallFunction(Golf_StartTimeTravel)
+					if Transporter_Destroyed==1 // Check for Good Future
+						Stage.ListPos+=2
+					else
+						Stage.ListPos+=3
+					endif
+					LoadStage()
+				endif
 			endif
-			LoadStage()
-		endif
-	endif
-	if Object[24].PropertyValue == 1 // We're in the Past
-		if keyDown.ButtonB == 1 // PRESENT
-			CallFunction(Golf_StartTimeTravel)
-			Stage.ListPos-- // back to the future..! it real
-			LoadStage()
-		endif
-		if keyDown.ButtonC == 1 // FUTURE 
-			CallFunction(Golf_StartTimeTravel)
-			if Transporter_Destroyed==1 // Check for Good Future
-				Stage.ListPos++
-			else
-				Stage.ListPos+=2
+			if Object[24].PropertyValue == 1 // We're in the Past
+				if keyDown.ButtonB == 1 // PRESENT
+					CallFunction(Golf_StartTimeTravel)
+					Stage.ListPos-- // back to the future..! it real
+					LoadStage()
+				endif
+				if keyDown.ButtonC == 1 // FUTURE 
+					CallFunction(Golf_StartTimeTravel)
+					if Transporter_Destroyed==1 // Check for Good Future
+						Stage.ListPos++
+					else
+						Stage.ListPos+=2
+					endif
+					LoadStage()
+				endif
 			endif
-			LoadStage()
-		endif
-	endif
-	if Object[24].PropertyValue == 2 // We're in the Future (good)
-		if keyDown.ButtonA == 1 // PAST 
-			CallFunction(Golf_StartTimeTravel)
-			Stage.ListPos--
-			LoadStage()
-		endif
-		if keyDown.ButtonB == 1 // PRESENT 
-			CallFunction(Golf_StartTimeTravel)
-			Stage.ListPos-=2
-			LoadStage()
-		endif
-	endif
-	if Object[24].PropertyValue == 3 // We're in the Future (bad)
-		if keyDown.ButtonA == 1 // PAST 
-			CallFunction(Golf_StartTimeTravel)
-			Stage.ListPos-=2
-			LoadStage()
-		endif
-		if keyDown.ButtonB == 1 // PRESENT 
-			CallFunction(Golf_StartTimeTravel)
-			Stage.ListPos-=3
-			LoadStage()
+			if Object[24].PropertyValue == 2 // We're in the Future (good)
+				if keyDown.ButtonA == 1 // PAST 
+					CallFunction(Golf_StartTimeTravel)
+					Stage.ListPos--
+					LoadStage()
+				endif
+				if keyDown.ButtonB == 1 // PRESENT 
+					CallFunction(Golf_StartTimeTravel)
+					Stage.ListPos-=2
+					LoadStage()
+				endif
+			endif
+			if Object[24].PropertyValue == 3 // We're in the Future (bad)
+				if keyDown.ButtonA == 1 // PAST 
+					CallFunction(Golf_StartTimeTravel)
+					Stage.ListPos-=2
+					LoadStage()
+				endif
+				if keyDown.ButtonB == 1 // PRESENT 
+					CallFunction(Golf_StartTimeTravel)
+					Stage.ListPos-=3
+					LoadStage()
+				endif
+			endif
 		endif
 	endif
 endfunction
@@ -2454,60 +2462,69 @@ function Golf_StrikeMode
 		// Y-Mode, so we probably want to swing!
 		CallFunction(Golf_Swing)
 		
-		if Object[24].PropertyValue == 0 // We're in Present Time
-			if keyPress.ButtonA == 1 // PAST
-				CallFunction(Golf_StartTimeTravel)
-				Stage.ListPos++
-				LoadStage()
-			endif
-			if keyPress.ButtonC == 1 // FUTURE
-				CallFunction(Golf_StartTimeTravel)
-				if Transporter_Destroyed==1 // Check for Good Future
-					Stage.ListPos+=2
-				else
-					Stage.ListPos+=3
+
+		// Prevent time travelling in boss levels. Sorry!
+		TempValue5 = Stage.ListPos
+		Mod(TempValue5, 10)
+
+		if TempValue5 != 8
+			if TempValue5 != 9
+				if Object[24].PropertyValue == 0 // We're in Present Time
+					if keyPress.ButtonA == 1 // PAST
+						CallFunction(Golf_StartTimeTravel)
+						Stage.ListPos++
+						LoadStage()
+					endif
+					if keyPress.ButtonC == 1 // FUTURE
+						CallFunction(Golf_StartTimeTravel)
+						if Transporter_Destroyed==1 // Check for Good Future
+							Stage.ListPos+=2
+						else
+							Stage.ListPos+=3
+						endif
+						LoadStage()
+					endif
 				endif
-				LoadStage()
-			endif
-		endif
-		if Object[24].PropertyValue == 1 // We're in the Past
-			if keyPress.ButtonB == 1 // PRESENT
-				CallFunction(Golf_StartTimeTravel)
-				Stage.ListPos-- // back to the future..! it real
-				LoadStage()
-			endif
-			if keyPress.ButtonC == 1 // FUTURE 
-				CallFunction(Golf_StartTimeTravel)
-				if Transporter_Destroyed==1 // Check for Good Future
-					Stage.ListPos++
-				else
-					Stage.ListPos+=2
+				if Object[24].PropertyValue == 1 // We're in the Past
+					if keyPress.ButtonB == 1 // PRESENT
+						CallFunction(Golf_StartTimeTravel)
+						Stage.ListPos-- // back to the future..! it real
+						LoadStage()
+					endif
+					if keyPress.ButtonC == 1 // FUTURE 
+						CallFunction(Golf_StartTimeTravel)
+						if Transporter_Destroyed==1 // Check for Good Future
+							Stage.ListPos++
+						else
+							Stage.ListPos+=2
+						endif
+						LoadStage()
+					endif
 				endif
-				LoadStage()
-			endif
-		endif
-		if Object[24].PropertyValue == 2 // We're in the Future (good)
-			if keyPress.ButtonA == 1 // PAST 
-				CallFunction(Golf_StartTimeTravel)
-				Stage.ListPos--
-				LoadStage()
-			endif
-			if keyPress.ButtonB == 1 // PRESENT 
-				CallFunction(Golf_StartTimeTravel)
-				Stage.ListPos-=2
-				LoadStage()
-			endif
-		endif
-		if Object[24].PropertyValue == 3 // We're in the Future (bad)
-			if keyPress.ButtonA == 1 // PAST 
-				CallFunction(Golf_StartTimeTravel)
-				Stage.ListPos-=2
-				LoadStage()
-			endif
-			if keyPress.ButtonB == 1 // PRESENT 
-				CallFunction(Golf_StartTimeTravel)
-				Stage.ListPos-=3
-				LoadStage()
+				if Object[24].PropertyValue == 2 // We're in the Future (good)
+					if keyPress.ButtonA == 1 // PAST 
+						CallFunction(Golf_StartTimeTravel)
+						Stage.ListPos--
+						LoadStage()
+					endif
+					if keyPress.ButtonB == 1 // PRESENT 
+						CallFunction(Golf_StartTimeTravel)
+						Stage.ListPos-=2
+						LoadStage()
+					endif
+				endif
+				if Object[24].PropertyValue == 3 // We're in the Future (bad)
+					if keyPress.ButtonA == 1 // PAST 
+						CallFunction(Golf_StartTimeTravel)
+						Stage.ListPos-=2
+						LoadStage()
+					endif
+					if keyPress.ButtonB == 1 // PRESENT 
+						CallFunction(Golf_StartTimeTravel)
+						Stage.ListPos-=3
+						LoadStage()
+					endif
+				endif
 			endif
 		endif
 

@@ -23,6 +23,7 @@ endfunction
 
 
 sub ObjectMain
+	Snolf.ForceTemp=1
 	switch Object.State
 	case 0
 		if Object.Animation==0
