@@ -2262,8 +2262,8 @@ endfunction
 function Golf_Main
 	Snolf.DidJustSwing = 0
 	
-	Snolf.Accumulator++
-	if Snolf.Accumulator == 512
+	Snolf.Accumulator+=2
+	if Snolf.Accumulator >= 512
 		Snolf.Accumulator = 0
 	endif
 
