@@ -604,7 +604,7 @@ function PlayerObject_HandleAirSpeed
 	FlipSign(TempValue0)
 	if Player.Speed>TempValue0
 		if Player.Left==1
-			Player.Speed-=Player.AirAcceleration
+			//Player.Speed-=Player.AirAcceleration
 			Player.Direction=FACING_LEFT
 		endif
 	else
@@ -614,7 +614,7 @@ function PlayerObject_HandleAirSpeed
 	endif
 	if Player.Speed<Player.TopSpeed
 		if Player.Right==1
-			Player.Speed+=Player.AirAcceleration
+			//Player.Speed+=Player.AirAcceleration
 			Player.Direction=FACING_RIGHT
 		endif
 	else
@@ -723,16 +723,16 @@ endfunction
 function PlayerObject_HandleAirMovement
 	Player.TrackScroll=1
 	Player.YVelocity+=Player.GravityStrength
-	if Player.YVelocity<Player.JumpCap
-		if Player.JumpHold==0
-			if Player.Timer>0
-				Player.YVelocity=Player.JumpCap
-				TempValue0=Player.Speed
-				TempValue0>>=5
-				Player.Speed-=TempValue0
-			endif
-		endif
-	endif
+	//if Player.YVelocity<Player.JumpCap
+	//	if Player.JumpHold==0
+	//		if Player.Timer>0
+	//			Player.YVelocity=Player.JumpCap
+	//			TempValue0=Player.Speed
+	//			TempValue0>>=5
+	//			Player.Speed-=TempValue0
+	//		endif
+	//	endif
+	//endif
 	Player.XVelocity=Player.Speed
 	if Player.Rotation<256
 		if Player.Rotation>0
@@ -2316,6 +2316,7 @@ function Golf_Main
 			if Snolf.ModeState > 1
 				// Y-Mode
 				TempValue6 += 512
+				TempValue6 /= 2
 				TempValue6 *= -1
 				Snolf.MeterY=TempValue6
 			else 
@@ -2341,7 +2342,7 @@ function Golf_EnterStrikeMode
 		Object[TempObjectPos].DrawOrder=Player.DrawOrder
 		// Facing left/right check. left first.
 		if Player.Direction == 1
-			Snolf.Accumulator = 127
+			Snolf.Accumulator = 256 // 256 leftways
 		endif
 
 		// Spawn Shot Meters
@@ -2362,7 +2363,7 @@ function Golf_StrikeMode
 	else
 		// Play sound and advance mode state.
 		Snolf.ModeState++
-		Snolf.Accumulator = 127; // 127 cosine at bottom
+		Snolf.Accumulator = 256; // 256 cosine at bottom
 	endif
 endfunction
 

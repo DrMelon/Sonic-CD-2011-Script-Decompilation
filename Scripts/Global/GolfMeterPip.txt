@@ -15,6 +15,9 @@ sub ObjectMain
     if Snolf.ModeState == 0 
         Object.Type=TypeName[BlankObject]
     endif
+    if Snolf.ModeState == 2
+        Object.XPos=Snolf.BarPosX
+    endif
 endsub
 
 sub ObjectDraw
