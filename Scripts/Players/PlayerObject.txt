@@ -2418,6 +2418,7 @@ function Golf_StrikeMode
 					Stage.ListPos+=2
 				endif
 				LoadStage()
+			endif
 		endif
 		if Object[24].PropertyValue == 2 // We're in the Future (good)
 			if keyPress.ButtonA == 1 // PAST 
@@ -2431,7 +2432,7 @@ function Golf_StrikeMode
 				LoadStage()
 			endif
 		endif
-		if Object[24].PropertyValue == 2 // We're in the Future (bad)
+		if Object[24].PropertyValue == 3 // We're in the Future (bad)
 			if keyPress.ButtonA == 1 // PAST 
 				CallFunction(Golf_StartTimeTravel)
 				Stage.ListPos-=2
