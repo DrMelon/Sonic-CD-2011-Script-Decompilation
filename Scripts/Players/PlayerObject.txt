@@ -1034,8 +1034,12 @@ function PlayerObject_HandleGround
 			endif
 		endif
 		if Player.JumpPress==1
-			CallFunction(PlayerObject_StartJump)
+			//CallFunction(PlayerObject_StartJump) // no jumping in snolf
 		else
+			if 1 == 1 // force roll in snolf
+				Player.State=PlayerObject_HandleRolling
+				Player.Animation=ANI_JUMPING
+			else
 			if Player.Up==1
 				if Player.Speed==0
 					if Player.Animation!=ANI_FLAILINGLEFT
@@ -1077,6 +1081,7 @@ function PlayerObject_HandleGround
 						endif
 					endif
 				endif
+			endif
 			endif
 		endif
 	endif
@@ -2302,13 +2307,11 @@ function Golf_Main
 			Cos(TempValue6,Snolf.Accumulator)
 			if Snolf.ModeState > 1
 				// Y-Mode
-				TempValue6 += 255
-				TempValue6<<=3
+				TempValue6 += 512
 				TempValue6 *= -1
 				Snolf.MeterY=TempValue6
 			else 
 				// X-Mode
-				TempValue5<<=4
 				Snolf.MeterX=TempValue5
 			endif
 		endif
@@ -2324,6 +2327,7 @@ function Golf_EnterStrikeMode
 		Snolf.MeterX = 0
 		Snolf.MeterY = 0
 		Snolf.Accumulator = 0
+		CreateTempObject(TypeName[GolfMeterH],0,Object.XPos,Object.YPos)
 		// Facing left/right check. left first.
 		if Player.Direction == 1
 			Snolf.Accumulator = 127
@@ -2335,6 +2339,7 @@ function Golf_EnterStrikeMode
 		//CallFunction(Golf_StrikeMode)
 	else
 		// In strike mode already
+		Snolf.Accumulator = 0
 		CallFunction(Golf_StrikeMode)
 	endif
 endfunction
@@ -2354,9 +2359,9 @@ function Golf_Swing
 	Snolf.ModeState = 0
 	Snolf.ForceTemp = 0
 	Player.XVelocity = Snolf.MeterX
-	Player.XVelocity *= 100
+	Player.XVelocity *= 2000
 	Player.YVelocity = Snolf.MeterY
-	Player.YVelocity *= 100
+	Player.YVelocity *= 2000
 	Player.Speed = Player.XVelocity
 	Player.State = PlayerObject_HandleAir
 	Player.Gravity = 1
