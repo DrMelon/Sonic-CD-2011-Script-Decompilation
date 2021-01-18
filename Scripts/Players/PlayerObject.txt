@@ -1746,9 +1746,9 @@ function PlayerObject_Death
 	if Player.YVelocity>1048576
 		if Player.Lives>0
 			if Player.Animation==ANI_BORED
-				Player.Lives=0
+				//Player.Lives=0
 			else
-				Player.Lives--
+				//Player.Lives--
 			endif
 		endif
 		Stage.TimeEnabled=0
@@ -1790,7 +1790,7 @@ function PlayerObject_Drown
 	Player.Animation=ANI_DROWNING
 	if Player.YVelocity>524288
 		if Player.Lives>0
-			Player.Lives--
+			//Player.Lives--
 		endif
 		Stage.TimeEnabled=0
 		Object.Type=TypeName[DeathEvent]
@@ -2258,6 +2258,63 @@ function Golf_ResetBall
 	Player.XVelocity = 0
 	Player.YVelocity = 0
 	Player.Speed = 0
+
+	if Object[24].PropertyValue == 0 // We're in Present Time
+		if keyDown.ButtonA == 1 // PAST
+			CallFunction(Golf_StartTimeTravel)
+			Stage.ListPos++
+			LoadStage()
+		endif
+		if keyDown.ButtonC == 1 // FUTURE
+			CallFunction(Golf_StartTimeTravel)
+			if Transporter_Destroyed==1 // Check for Good Future
+				Stage.ListPos+=2
+			else
+				Stage.ListPos+=3
+			endif
+			LoadStage()
+		endif
+	endif
+	if Object[24].PropertyValue == 1 // We're in the Past
+		if keyDown.ButtonB == 1 // PRESENT
+			CallFunction(Golf_StartTimeTravel)
+			Stage.ListPos-- // back to the future..! it real
+			LoadStage()
+		endif
+		if keyDown.ButtonC == 1 // FUTURE 
+			CallFunction(Golf_StartTimeTravel)
+			if Transporter_Destroyed==1 // Check for Good Future
+				Stage.ListPos++
+			else
+				Stage.ListPos+=2
+			endif
+			LoadStage()
+		endif
+	endif
+	if Object[24].PropertyValue == 2 // We're in the Future (good)
+		if keyDown.ButtonA == 1 // PAST 
+			CallFunction(Golf_StartTimeTravel)
+			Stage.ListPos--
+			LoadStage()
+		endif
+		if keyDown.ButtonB == 1 // PRESENT 
+			CallFunction(Golf_StartTimeTravel)
+			Stage.ListPos-=2
+			LoadStage()
+		endif
+	endif
+	if Object[24].PropertyValue == 3 // We're in the Future (bad)
+		if keyDown.ButtonA == 1 // PAST 
+			CallFunction(Golf_StartTimeTravel)
+			Stage.ListPos-=2
+			LoadStage()
+		endif
+		if keyDown.ButtonB == 1 // PRESENT 
+			CallFunction(Golf_StartTimeTravel)
+			Stage.ListPos-=3
+			LoadStage()
+		endif
+	endif
 endfunction
 
 function Golf_Main
