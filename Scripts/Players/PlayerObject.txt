@@ -2412,6 +2412,7 @@ function Golf_EnterStrikeMode
 		Snolf.MeterX = 0
 		Snolf.MeterY = 0
 		Snolf.Accumulator = 0
+		DebugLog("Starting a Snolf")
 		CreateTempObject(TypeName[GolfMeterH],0,Player.XPos,Player.YPos)
 		Object[TempObjectPos].DrawOrder=Player.DrawOrder
 		CreateTempObject(TypeName[GolfMeterPip],0,Player.XPos,Player.YPos)

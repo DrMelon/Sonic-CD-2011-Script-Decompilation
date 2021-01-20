@@ -1,6 +1,6 @@
 
 //-------Aliases-------//
-#alias 82: TYPE_GOLFMETERH
+#alias 253: TYPE_GOLFMETERH
 
 sub ObjectMain
     Object.XPos=Snolf.BarPosX
@@ -20,6 +20,7 @@ endsub
 sub ObjectStartup
 	LoadSpriteSheet("Global/Items.gif")
 	SpriteFrame(-8,-8,16,16,1,1)
+    DebugLog("Spawned GolfMeterH")
 endsub
 
 sub RSDK
