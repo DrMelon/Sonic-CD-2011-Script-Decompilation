@@ -68,7 +68,7 @@ sub ObjectPlayerInteraction
 		else
 			PlayerObjectCollision(C_TOUCH,-32,-24,32,16)
 			if CheckResult==1
-				if Player.YVelocity<-262144
+				//if Player.YVelocity>-262144
 					if Player.JumpPress==1
 						Player.Speed=Player.XPos
 						Player.Speed-=Object.XPos
@@ -88,7 +88,7 @@ sub ObjectPlayerInteraction
 						HapticEffect(88,0,0,0)
 #endplatform
 					endif
-				endif
+				//endif
 			endif
 		endif
 	else
@@ -125,7 +125,7 @@ sub ObjectPlayerInteraction
 		else
 			PlayerObjectCollision(C_TOUCH,-32,-24,32,16)
 			if CheckResult==1
-				if Player.YVelocity<-262144
+				//if Player.YVelocity>-262144
 					if Player.JumpPress==1
 						Player.Speed=Player.XPos
 						Player.Speed-=Object.XPos
@@ -142,7 +142,7 @@ sub ObjectPlayerInteraction
 						StopSfx(0)
 						PlayStageSfx(7,0)
 					endif
-				endif
+				//endif
 			endif
 		endif
 	endif

@@ -2319,12 +2319,13 @@ function Golf_Main
 					CallFunction(Golf_EnterStrikeMode)
 				endif
 			endif
-		endif
-		if Snolf.ForceAllow == 1
-			CallFunction(Golf_EnterStrikeMode)
-		endif
-		if Snolf.ForceTemp == 1
-			CallFunction(Golf_EnterStrikeMode)
+		else
+			if Snolf.ForceAllow == 1
+				CallFunction(Golf_EnterStrikeMode)
+			endif
+			if Snolf.ForceTemp == 1
+				CallFunction(Golf_EnterStrikeMode)
+			endif
 		endif
 	else
 		// Store position in strikemode.
