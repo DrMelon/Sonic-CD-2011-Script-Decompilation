@@ -79,6 +79,7 @@
 #function Golf_EnterStrikeMode
 #function Golf_StrikeMode
 #function Golf_StartTimeTravel
+#function Golf_PerformTimeTravel
 
 
 function PlayerObject_BadnikBreak
@@ -2269,73 +2270,17 @@ function Golf_ResetBall
 	Player.YVelocity = 0
 	Player.Speed = 0
 
-	// Prevent time travelling in boss levels. Sorry!
-	TempValue5 = Stage.ListPos
-	Mod(TempValue5, 10)
-
-	if TempValue5 != 8
-		if TempValue5 != 9
-			if Object[24].PropertyValue == 0 // We're in Present Time
-				if keyDown.ButtonA == 1 // PAST
-					CallFunction(Golf_StartTimeTravel)
-					Stage.ListPos++
-					LoadStage()
-				endif
-				if keyDown.ButtonC == 1 // FUTURE
-					CallFunction(Golf_StartTimeTravel)
-					if Transporter_Destroyed==1 // Check for Good Future
-						Stage.ListPos+=2
-					else
-						Stage.ListPos+=3
-					endif
-					LoadStage()
-				endif
-			endif
-			if Object[24].PropertyValue == 1 // We're in the Past
-				if keyDown.ButtonB == 1 // PRESENT
-					CallFunction(Golf_StartTimeTravel)
-					Stage.ListPos-- // back to the future..! it real
-					LoadStage()
-				endif
-				if keyDown.ButtonC == 1 // FUTURE 
-					CallFunction(Golf_StartTimeTravel)
-					if Transporter_Destroyed==1 // Check for Good Future
-						Stage.ListPos++
-					else
-						Stage.ListPos+=2
-					endif
-					LoadStage()
-				endif
-			endif
-			if Object[24].PropertyValue == 2 // We're in the Future (good)
-				if keyDown.ButtonA == 1 // PAST 
-					CallFunction(Golf_StartTimeTravel)
-					Stage.ListPos--
-					LoadStage()
-				endif
-				if keyDown.ButtonB == 1 // PRESENT 
-					CallFunction(Golf_StartTimeTravel)
-					Stage.ListPos-=2
-					LoadStage()
-				endif
-			endif
-			if Object[24].PropertyValue == 3 // We're in the Future (bad)
-				if keyDown.ButtonA == 1 // PAST 
-					CallFunction(Golf_StartTimeTravel)
-					Stage.ListPos-=2
-					LoadStage()
-				endif
-				if keyDown.ButtonB == 1 // PRESENT 
-					CallFunction(Golf_StartTimeTravel)
-					Stage.ListPos-=3
-					LoadStage()
-				endif
-			endif
-		endif
-	endif
+	CallFunction(Golf_PerformTimeTravel)
 endfunction
 
 function Golf_Main
+	if Snolf.DidJustSwing == 2
+		PlaySfx(13,0)
+	endif
+	if Snolf.DidJustSwing == 3
+		PlaySfx(12,0)
+	endif
+
 	Snolf.DidJustSwing = 0
 	
 	Snolf.Accumulator+=2
@@ -2458,78 +2403,88 @@ function Golf_StartTimeTravel
 	PlaySfx(14,0)
 endfunction
 
+function Golf_PerformTimeTravel
+	// Prevent time travelling in boss levels. Sorry!
+	TempValue5 = Stage.ListPos
+	Mod(TempValue5, 10)
+	
+
+	if TempValue5 != 8
+		if TempValue5 != 9
+			DebugLog("Time Travel!")
+			if Object[24].PropertyValue == 0 // We're in Present Time
+				if keyDown.ButtonA == 1 // PAST
+					CallFunction(Golf_StartTimeTravel)
+					Stage.ListPos++
+					LoadStage()
+					Snolf.DidJustSwing = 2
+				endif
+				if keyDown.ButtonC == 1 // FUTURE
+					CallFunction(Golf_StartTimeTravel)
+					if Transporter_Destroyed==1 // Check for Good Future
+						Stage.ListPos+=2
+					else
+						Stage.ListPos+=3
+					endif
+					LoadStage()
+					Snolf.DidJustSwing = 3
+				endif
+			endif
+			if Object[24].PropertyValue == 1 // We're in the Past
+				if keyDown.ButtonB == 1 // PRESENT
+					CallFunction(Golf_StartTimeTravel)
+					Stage.ListPos-- // back to the future..! it real
+					LoadStage()
+					Snolf.DidJustSwing = 3
+				endif
+				if keyDown.ButtonC == 1 // FUTURE 
+					CallFunction(Golf_StartTimeTravel)
+					if Transporter_Destroyed==1 // Check for Good Future
+						Stage.ListPos++
+					else
+						Stage.ListPos+=2
+					endif
+					LoadStage()
+					Snolf.DidJustSwing = 3
+				endif
+			endif
+			if Object[24].PropertyValue == 2 // We're in the Future (good)
+				if keyDown.ButtonA == 1 // PAST 
+					CallFunction(Golf_StartTimeTravel)
+					Stage.ListPos--
+					LoadStage()
+					Snolf.DidJustSwing = 2
+				endif
+				if keyDown.ButtonB == 1 // PRESENT 
+					CallFunction(Golf_StartTimeTravel)
+					Stage.ListPos-=2
+					LoadStage()
+					Snolf.DidJustSwing = 2
+				endif
+			endif
+			if Object[24].PropertyValue == 3 // We're in the Future (bad)
+				if keyDown.ButtonA == 1 // PAST 
+					CallFunction(Golf_StartTimeTravel)
+					Stage.ListPos-=2
+					LoadStage()
+					Snolf.DidJustSwing = 2
+				endif
+				if keyDown.ButtonB == 1 // PRESENT 
+					CallFunction(Golf_StartTimeTravel)
+					Stage.ListPos-=3
+					LoadStage()
+					Snolf.DidJustSwing = 2
+				endif
+			endif
+		endif
+	endif
+endfunction
+
 function Golf_StrikeMode
 	if Snolf.ModeState == 2
 		// Y-Mode, so we probably want to swing!
 		CallFunction(Golf_Swing)
-		
-
-		// Prevent time travelling in boss levels. Sorry!
-		TempValue5 = Stage.ListPos
-		Mod(TempValue5, 10)
-
-		if TempValue5 != 8
-			if TempValue5 != 9
-				if Object[24].PropertyValue == 0 // We're in Present Time
-					if keyPress.ButtonA == 1 // PAST
-						CallFunction(Golf_StartTimeTravel)
-						Stage.ListPos++
-						LoadStage()
-					endif
-					if keyPress.ButtonC == 1 // FUTURE
-						CallFunction(Golf_StartTimeTravel)
-						if Transporter_Destroyed==1 // Check for Good Future
-							Stage.ListPos+=2
-						else
-							Stage.ListPos+=3
-						endif
-						LoadStage()
-					endif
-				endif
-				if Object[24].PropertyValue == 1 // We're in the Past
-					if keyPress.ButtonB == 1 // PRESENT
-						CallFunction(Golf_StartTimeTravel)
-						Stage.ListPos-- // back to the future..! it real
-						LoadStage()
-					endif
-					if keyPress.ButtonC == 1 // FUTURE 
-						CallFunction(Golf_StartTimeTravel)
-						if Transporter_Destroyed==1 // Check for Good Future
-							Stage.ListPos++
-						else
-							Stage.ListPos+=2
-						endif
-						LoadStage()
-					endif
-				endif
-				if Object[24].PropertyValue == 2 // We're in the Future (good)
-					if keyPress.ButtonA == 1 // PAST 
-						CallFunction(Golf_StartTimeTravel)
-						Stage.ListPos--
-						LoadStage()
-					endif
-					if keyPress.ButtonB == 1 // PRESENT 
-						CallFunction(Golf_StartTimeTravel)
-						Stage.ListPos-=2
-						LoadStage()
-					endif
-				endif
-				if Object[24].PropertyValue == 3 // We're in the Future (bad)
-					if keyPress.ButtonA == 1 // PAST 
-						CallFunction(Golf_StartTimeTravel)
-						Stage.ListPos-=2
-						LoadStage()
-					endif
-					if keyPress.ButtonB == 1 // PRESENT 
-						CallFunction(Golf_StartTimeTravel)
-						Stage.ListPos-=3
-						LoadStage()
-					endif
-				endif
-			endif
-		endif
-
-		
+		CallFunction(Golf_PerformTimeTravel)
 	else
 		// Play sound and advance mode state.
 		Snolf.ModeState++
