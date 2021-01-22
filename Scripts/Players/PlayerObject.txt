@@ -1049,53 +1049,54 @@ function PlayerObject_HandleGround
 		endif
 		if Player.JumpPress==1
 			//CallFunction(PlayerObject_StartJump) // no jumping in snolf
+			DebugLog("Nojump")
 		else
 			if Player.ControlMode != -1 // force roll in snolf
 				Player.State=PlayerObject_HandleRolling
 				Player.Animation=ANI_JUMPING
 			else
-			if Player.Up==1
-				if Player.Speed==0
-					if Player.Animation!=ANI_FLAILINGLEFT
-						if Player.Animation!=ANI_FLAILINGRIGHT
-							Player.State=PlayerObject_LookingUp
-							Player.Animation=ANI_LOOKINGUP
-							Player.Timer=0
+				if Player.Up==1
+					if Player.Speed==0
+						if Player.Animation!=ANI_FLAILINGLEFT
+							if Player.Animation!=ANI_FLAILINGRIGHT
+								Player.State=PlayerObject_LookingUp
+								Player.Animation=ANI_LOOKINGUP
+								Player.Timer=0
+							endif
 						endif
 					endif
 				endif
-			endif
-			if Player.Down==1
-				if Player.Speed==0
-					if Player.Animation!=ANI_FLAILINGLEFT
-						if Player.Animation!=ANI_FLAILINGRIGHT
-							Player.State=PlayerObject_Crouching
-							Player.Animation=ANI_LOOKINGDOWN
-							Player.Timer=0
+				if Player.Down==1
+					if Player.Speed==0
+						if Player.Animation!=ANI_FLAILINGLEFT
+							if Player.Animation!=ANI_FLAILINGRIGHT
+								Player.State=PlayerObject_Crouching
+								Player.Animation=ANI_LOOKINGDOWN
+								Player.Timer=0
+							endif
 						endif
-					endif
-				else
-					if Player.Left==0
-						if Player.Right==0
-							if Player.Speed>0
-								if Player.Speed>34816
-									Player.State=PlayerObject_HandleRolling
-									Player.Animation=ANI_JUMPING
-									Player.iYPos-=Player.CameraOffset
-									Player.AbilityTimer=1024
-								endif
-							else
-								if Player.Speed<-34816
-									Player.State=PlayerObject_HandleRolling
-									Player.Animation=ANI_JUMPING
-									Player.iYPos-=Player.CameraOffset
-									Player.AbilityTimer=1024
+					else
+						if Player.Left==0
+							if Player.Right==0
+								if Player.Speed>0
+									if Player.Speed>34816
+										Player.State=PlayerObject_HandleRolling
+										Player.Animation=ANI_JUMPING
+										Player.iYPos-=Player.CameraOffset
+										Player.AbilityTimer=1024
+									endif
+								else
+									if Player.Speed<-34816
+										Player.State=PlayerObject_HandleRolling
+										Player.Animation=ANI_JUMPING
+										Player.iYPos-=Player.CameraOffset
+										Player.AbilityTimer=1024
+									endif
 								endif
 							endif
 						endif
 					endif
 				endif
-			endif
 			endif
 		endif
 	endif
@@ -1755,13 +1756,6 @@ function PlayerObject_Death
 		Player.Animation=ANI_DYING
 	endif
 	if Player.YVelocity>1048576
-		if Player.Lives>0
-			if Player.Animation==ANI_BORED
-				//Player.Lives=0
-			else
-				//Player.Lives--
-			endif
-		endif
 		Stage.TimeEnabled=0
 		Object.Type=TypeName[DeathEvent]
 		Object.DrawOrder=6
@@ -2312,12 +2306,6 @@ function Golf_Main
 		if Player.Speed < 32000 
 			if Player.Speed > -32000
 				CallFunction(Golf_EnterStrikeMode)
-			endif
-		else
-			if Player.Speed > -32000
-				if Player.Speed < 32000
-					CallFunction(Golf_EnterStrikeMode)
-				endif
 			endif
 		else
 			if Snolf.ForceAllow == 1
