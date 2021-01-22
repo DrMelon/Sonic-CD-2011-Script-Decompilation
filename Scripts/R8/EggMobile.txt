@@ -1466,12 +1466,14 @@ sub ObjectMain
 	Object.Rotation=Object.Value3
 	Object.Rotation/=10
 	if Object[+1].Value3==0
-		CallFunction(Object[+1].Value1)
+		TempValue6=Object[+1].Value1
+		TempValue6+=8
+		CallFunction(TempValue6)
+		// Had to offset this function call by 8 - as the player has 8 new funcs, it was somehow corrupting direct offsets
 	endif
 		DebugLog("Robotnik thinking...")
 	if(Object.State == 0)
 		DebugLog("Bad state.")
-		Object.State=EggMobile_Function69
 	endif
 	CallFunction(Object.State)
 	DebugLog("Thonked.")
